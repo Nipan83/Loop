@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Professional networking platform",
   "scripts": {
-    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev": "concurrently \"cd backend && HOST=0.0.0.0 npm run dev\" \"cd frontend && npm run dev -- --host 0.0.0.0\"",
     "dev:backend": "cd backend && npm run dev",
     "dev:frontend": "cd frontend && npm run dev",
     "build": "cd frontend && npm run build",
