@@ -1,108 +1,145 @@
 .navbar {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
-  position: sticky;
-  top: 0;
-  z-index: 100;
+    background: var(--navbar-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--navbar-border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    transition:
+        background-color var(--transition),
+        border-color var(--transition);
 }
 
 .navbar-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 14px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .navbar-brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  text-decoration: none;
-  color: var(--primary);
-  transition: transform var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: var(--primary);
+    transition: transform var(--transition);
 }
 
 .navbar-brand:hover {
-  transform: scale(1.02);
+    transform: scale(1.02);
 }
 
 .brand-icon {
-  display: flex;
-  align-items: center;
-  filter: drop-shadow(0 2px 4px rgba(99, 102, 241, 0.3));
+    display: flex;
+    align-items: center;
+    filter: drop-shadow(0 2px 4px rgba(99, 102, 241, 0.3));
 }
 
 .brand-name {
-  font-size: 26px;
-  font-weight: 800;
-  letter-spacing: -0.75px;
-  background: linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.75px;
+    background: linear-gradient(135deg, var(--primary) 0%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .navbar-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .navbar-actions .btn-ghost {
-  padding: 10px 16px;
-  border-radius: var(--radius);
-  font-weight: 500;
+    padding: 10px 16px;
+    border-radius: var(--radius);
+    font-weight: 500;
 }
 
 .navbar-actions .btn-ghost svg {
-  transition: transform var(--transition);
+    transition: transform var(--transition);
 }
 
 .navbar-actions .btn-ghost:hover svg {
-  transform: scale(1.1);
+    transform: scale(1.1);
 }
 
 .user-menu {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-left: 8px;
-  padding-left: 16px;
-  border-left: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: 8px;
+    padding-left: 16px;
+    border-left: 1px solid var(--border);
 }
 
 .username {
-  font-weight: 600;
-  color: var(--text-primary);
-  font-size: 14px;
-  padding: 6px 12px;
-  background: var(--primary-glow);
-  border-radius: 100px;
-  color: var(--primary-dark);
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 14px;
+    padding: 6px 12px;
+    background: var(--primary-glow);
+    border-radius: 100px;
+    color: var(--primary-dark);
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: var(--secondary);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all var(--transition);
+    color: var(--text-secondary);
+}
+
+.theme-toggle:hover {
+    background: var(--primary-glow);
+    color: var(--primary);
+    transform: rotate(15deg);
+}
+
+.theme-toggle:active {
+    transform: rotate(15deg) scale(0.95);
+}
+
+.theme-toggle svg {
+    transition: transform var(--transition);
 }
 
 @media (max-width: 768px) {
-  .navbar-container {
-    padding: 12px 16px;
-  }
+    .navbar-container {
+        padding: 12px 16px;
+    }
 
-  .navbar-actions {
-    gap: 6px;
-  }
+    .navbar-actions {
+        gap: 6px;
+    }
 
-  .user-menu {
-    display: none;
-  }
+    .user-menu {
+        display: none;
+    }
 
-  .navbar-actions .btn span {
-    display: none;
-  }
-  
-  .navbar-actions .btn {
-    padding: 10px;
-  }
+    .navbar-actions .btn span {
+        display: none;
+    }
+
+    .navbar-actions .btn {
+        padding: 10px;
+    }
+
+    .theme-toggle {
+        width: 36px;
+        height: 36px;
+    }
 }

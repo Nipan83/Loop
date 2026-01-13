@@ -1,110 +1,116 @@
-import { useState, useEffect } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
-import api from '../services/api'
-import './CreatePost.css'
+import { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import api from "../services/api";
+import "./CreatePost.css";
 
 export default function CreatePost() {
-  const { user, loading: authLoading } = useAuth()
-  const navigate = useNavigate()
-  const [categories, setCategories] = useState([])
+  const { user, loading: authLoading, refreshCategories } = useAuth();
+  const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
   const [formData, setFormData] = useState({
-    title: '',
-    content: '',
-    category_id: ''
-  })
-  const [error, setError] = useState('')
-  const [submitting, setSubmitting] = useState(false)
+    title: "",
+    content: "",
+    category_id: "",
+  });
+  const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     if (!authLoading && !user) {
-      navigate('/login')
+      navigate("/login");
     }
-  }, [user, authLoading, navigate])
+  }, [user, authLoading, navigate]);
 
   useEffect(() => {
-    fetchCategories()
-  }, [])
+    fetchCategories();
+  }, []);
 
   const fetchCategories = async () => {
     try {
-      const response = await api.get('/categories')
-      setCategories(response.data)
+      const response = await api.get("/categories");
+      setCategories(response.data);
     } catch (error) {
-      console.error('Failed to fetch categories:', error)
+      console.error("Failed to fetch categories:", error);
     }
-  }
+  };
 
   const handleChange = (e) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value
-    }))
-    setError('')
-  }
+      [e.target.name]: e.target.value,
+    }));
+    setError("");
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError('')
+    e.preventDefault();
+    setError("");
 
     if (!formData.title.trim()) {
-      setError('Title is required')
-      return
+      setError("Title is required");
+      return;
     }
 
     if (formData.title.length < 5) {
-      setError('Title must be at least 5 characters')
-      return
+      setError("Title must be at least 5 characters");
+      return;
     }
 
     if (!formData.content.trim()) {
-      setError('Content is required')
-      return
+      setError("Content is required");
+      return;
     }
 
     if (formData.content.length < 20) {
-      setError('Content must be at least 20 characters')
-      return
+      setError("Content must be at least 20 characters");
+      return;
     }
 
-    setSubmitting(true)
+    setSubmitting(true);
     try {
       const payload = {
         title: formData.title,
-        content: formData.content
-      }
-      
+        content: formData.content,
+      };
+
       // Only include category_id if one is selected
       if (formData.category_id) {
-        payload.category_id = parseInt(formData.category_id)
+        payload.category_id = parseInt(formData.category_id);
       }
 
-      const response = await api.post('/posts', payload)
-      navigate(`/post/${response.data.id}`)
+      const response = await api.post("/posts", payload);
+
+      // Refresh categories to update post counts
+      await refreshCategories();
+
+      navigate(`/post/${response.data.id}`);
     } catch (error) {
-      setError(error.message || 'Failed to create post')
+      setError(error.message || "Failed to create post");
     } finally {
-      setSubmitting(false)
+      setSubmitting(false);
     }
-  }
+  };
 
   if (authLoading) {
     return (
       <div className="loading">
         <div className="spinner"></div>
       </div>
-    )
+    );
   }
 
   if (!user) {
-    return null
+    return null;
   }
 
   return (
     <div className="create-post">
       <div className="create-post-container">
         <h1>Create a New Post</h1>
-        <p className="create-subtitle">Share your question, idea, or start a discussion</p>
+        <p className="create-subtitle">
+          Share your question, idea, or start a discussion
+        </p>
 
         {error && <div className="error-message">{error}</div>}
 
@@ -144,7 +150,7 @@ export default function CreatePost() {
               onChange={handleChange}
             >
               <option value="">Auto-detect category</option>
-              {categories.map(cat => (
+              {categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>
                   {cat.icon} {cat.name}
                 </option>
@@ -156,17 +162,19 @@ export default function CreatePost() {
           </div>
 
           <div className="form-actions">
-            <Link to="/" className="btn btn-secondary">Cancel</Link>
-            <button 
-              type="submit" 
+            <Link to="/" className="btn btn-secondary">
+              Cancel
+            </Link>
+            <button
+              type="submit"
               className="btn btn-primary"
               disabled={submitting}
             >
-              {submitting ? 'Creating...' : 'Create Post'}
+              {submitting ? "Creating..." : "Create Post"}
             </button>
           </div>
         </form>
       </div>
     </div>
-  )
+  );
 }
